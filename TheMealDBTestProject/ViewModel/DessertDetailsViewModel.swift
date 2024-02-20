@@ -8,28 +8,33 @@
 import Foundation
 
 class DessertDetailsViewModel: ObservableObject {
-    @Published var mealDetails = DessertDetails()
+    @Published var desertDetails = DessertDetails()
     @Published var ingredeientsDetails: [IngredientAndMeasure] = []
     private var selectedItemID: String
-    @Published var isErrorPresent: Bool = false
+    
+    enum displayType {
+        case video
+        case image
+        case none
+    }
     
     init(selectedID: String) {
         selectedItemID = selectedID
     }
     
-    func fetchMealDetails() async {
+    func fetchDesertDetails() async -> ResultType {
         let result = await DessertsService().getDesertDetails(id: selectedItemID)
         switch result {
             case .success(let mealDetails):
                 DispatchQueue.main.async {
-                    self.mealDetails = mealDetails.meals[0]
-                    self.ingredeientsDetails = self.mealDetails.ingredientsAndMeasures()
+                    self.desertDetails = mealDetails.meals[0]
+                    self.desertDetails.strYoutube = self.desertDetails.strYoutube?.replacingOccurrences(of: "watch?v=", with: "embed/")
+                    self.ingredeientsDetails = self.desertDetails.ingredientsAndMeasures()
                 }
+                return .Success
             case .failure(let error):
                 print(error)
-                DispatchQueue.main.async {
-                    self.isErrorPresent = true
-                }
+                return .NoData
         }
     }
     
@@ -37,5 +42,14 @@ class DessertDetailsViewModel: ObservableObject {
         if let index = ingredeientsDetails.firstIndex(where: { $0.id == id }) {
             ingredeientsDetails[index].selected.toggle()
         }
+    }
+    
+    func getDisplayTypeURL() -> (url: String, type: displayType) {
+        if let url = desertDetails.strYoutube, url != "" {
+            return (url, .video)
+        } else if let url = desertDetails.strMealThumb, url != ""{
+            return (url, .image)
+        }
+        return ("", .none)
     }
 }

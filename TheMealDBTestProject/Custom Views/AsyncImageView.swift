@@ -14,16 +14,18 @@ struct AsyncImageView: View {
             switch phase {
                 case .empty:
                     ProgressView()
+                        .frame(width: 50, height: 50)
                 case .success(let image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                case .failure(let error):
+                case .failure:
                     Image(systemName: "photo.artframe")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .tint(Color.black)
-                    Text("Failed to load image: \(error.localizedDescription)")
+                        .opacity(0.4)
+                        .frame(width: 50, height: 50)
                 @unknown default:
                     Text("Unknown state")
             }
