@@ -8,20 +8,19 @@
 import Foundation
 
 class DessertsListViewModel: ObservableObject {
-    @Published var mealsList: [Deserts] = []
-    @Published var isErrorPresent: Bool = false
-    func fetchMealsList() async {
+    @Published var deserts: [Deserts] = []
+    
+    func fetchDesertsList() async -> ResultType {
         let result = await DessertsService().getDesertsList()
         switch result {
             case .success(let mealsList):
                 DispatchQueue.main.async {
-                    self.mealsList = mealsList.meals
+                    self.deserts = mealsList.meals.sorted {$0.strMeal < $1.strMeal}
                 }
+                return .Success
             case .failure(let error):
                 print(error)
-                DispatchQueue.main.async {
-                    self.isErrorPresent = true
-                }
+                return .NoData
         }
     }
 }

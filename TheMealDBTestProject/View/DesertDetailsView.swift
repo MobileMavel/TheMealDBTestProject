@@ -9,12 +9,21 @@ import SwiftUI
 
 struct DesertDetailsView: View {
     @StateObject var viewModel: DessertDetailsViewModel
-    @State private var isPlayingVideo = false
-    @State private var isVideoAvailable = true
+    @State var result: ResultType = .Fetching
     var body: some View {
-        GeometryReader { geo in
-            VStack {
-                if viewModel.isErrorPresent {
+        Group {
+            switch result {
+                case .Success:
+                    displayView
+                    mealTitleAndDetails
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            ingredientsAndMeasures
+                            instructions
+                        }
+                    }
+                    .padding(.horizontal)
+                case .NoData:
                     Image(systemName: "exclamationmark.triangle")
                         .imageScale(.large)
                         .foregroundColor(.black)
@@ -22,41 +31,23 @@ struct DesertDetailsView: View {
                     LabelView(
                         text: "Unable to fetch dessert details!",
                         font: .title3)
-                } else if viewModel.mealDetails.idMeal == nil {
+                case .Fetching:
                     ProgressView()
-                } else {
-                    youtubeView(url: viewModel.mealDetails.strYoutube ?? "", size: geo.size)
-                    HStack {
-                        VStack(alignment: .leading) {
-                            mealTitleAndDetails
-                            ScrollView {
-                                ingredientsAndMeasures
-                                instructions
-                            }
-                            Spacer()
-                        }
-                        Spacer()
-                    }
-                    .padding(.all)
-                }
             }
-            .onAppear {
-                Task {
-                    await viewModel.fetchMealDetails()
-                }
-            }
+        }
+        .task {
+            result = await viewModel.fetchDesertDetails()
         }
         .toolbarBackground(
             Color.themeColor,
             for: .navigationBar
         )
-        .foregroundColor(.black)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(.visible, for: .navigationBar)
     }
     
     var instructions: some View {
-        VStack(alignment: .leading) {
+        Group {
             LabelView(
                 text: "Instructions",
                 font: .title3,
@@ -64,35 +55,37 @@ struct DesertDetailsView: View {
             )
             .padding(.bottom)
             LabelView(
-                text: viewModel.mealDetails.strInstructions ?? "",
+                text: viewModel.desertDetails.strInstructions ?? "",
                 font: .title2
             )
         }
     }
     
     var mealTitleAndDetails: some View {
-        VStack(alignment: .leading) {
-            LabelView(
-                text: viewModel.mealDetails.strMeal ?? "",
-                font: .largeTitle
-            )
-            LabelView(
-                text: viewModel.mealDetails.strArea ?? "",
-                font: .subheadline,
-                foregroundColor: .themeColor
-            )
-            .padding(.bottom)
+        HStack {
+            VStack(alignment: .leading) {
+                LabelView(
+                    text: viewModel.desertDetails.strMeal ?? "",
+                    font: .largeTitle
+                )
+                LabelView(
+                    text: viewModel.desertDetails.strArea ?? "",
+                    font: .subheadline,
+                    foregroundColor: .themeColor
+                )
+            }
+            Spacer()
         }
+        .padding(.all)
     }
     
     var ingredientsAndMeasures: some View {
-        VStack(alignment: .leading) {
+        Group {
             LabelView(
                 text: "Ingredients",
                 font: .title3,
                 isBold: true
             )
-            .padding(.bottom)
             ForEach(viewModel.ingredeientsDetails, id: \.id) { details in
                 HStack {
                     Image(systemName: details.selected ? "checkmark.circle.fill" : "circle")
@@ -114,20 +107,26 @@ struct DesertDetailsView: View {
                 }
             }
             .padding(.horizontal)
-            .padding(.bottom)
         }
         .padding(.bottom)
     }
     
-    func youtubeView(url: String, size: CGSize) -> some View {
+    var displayView: some View {
         VStack {
-            YouTubeView(videoId: viewModel.mealDetails.strYoutube ?? "")
+            let displayTypeData = viewModel.getDisplayTypeURL()
+            switch displayTypeData.type {
+                case .video:
+                    YouTubeView(videoId: displayTypeData.url)
+                case .image:
+                    AsyncImageView(url: displayTypeData.url)
+                case .none:
+                    EmptyView()
+            }
         }
-        .frame(width: size.width, height: size.height * 0.48)
     }
 }
 
-struct MealDetailsView_Previews: PreviewProvider {
+struct DesertDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         DesertDetailsView(viewModel: DessertDetailsViewModel(selectedID: ""))
     }

@@ -19,7 +19,6 @@
 		D7DAFA0A2B8238F700F00003 /* DesertDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAFA092B8238F700F00003 /* DesertDetailsView.swift */; };
 		D7DAFA112B833C8200F00003 /* DessertDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAFA102B833C8200F00003 /* DessertDetailsViewModel.swift */; };
 		D7DAFA132B83738800F00003 /* YoutubeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAFA122B83738800F00003 /* YoutubeView.swift */; };
-		D7DAFA162B8373D200F00003 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAFA152B8373D200F00003 /* String+extensions.swift */; };
 		D7DAFA182B83741500F00003 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAFA172B83741500F00003 /* AsyncImageView.swift */; };
 		D7DAFA1C2B8379B200F00003 /* LabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAFA1B2B8379B200F00003 /* LabelView.swift */; };
 		D7DAFA1E2B8379F300F00003 /* DesertRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAFA1D2B8379F300F00003 /* DesertRowView.swift */; };
@@ -43,7 +42,6 @@
 		D7DAFA092B8238F700F00003 /* DesertDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesertDetailsView.swift; sourceTree = "<group>"; };
 		D7DAFA102B833C8200F00003 /* DessertDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DessertDetailsViewModel.swift; sourceTree = "<group>"; };
 		D7DAFA122B83738800F00003 /* YoutubeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YoutubeView.swift; sourceTree = "<group>"; };
-		D7DAFA152B8373D200F00003 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
 		D7DAFA172B83741500F00003 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		D7DAFA1B2B8379B200F00003 /* LabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelView.swift; sourceTree = "<group>"; };
 		D7DAFA1D2B8379F300F00003 /* DesertRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesertRowView.swift; sourceTree = "<group>"; };
@@ -86,8 +84,8 @@
 				D7DAFA222B83CF8600F00003 /* Screenshots */,
 				D7DAFA1F2B83857B00F00003 /* Utils */,
 				D7DAFA0F2B833C5C00F00003 /* Service */,
-				D7DAFA0E2B833C4E00F00003 /* ViewModel */,
 				D7DAFA0D2B833C4300F00003 /* Model */,
+				D7DAFA0E2B833C4E00F00003 /* ViewModel */,
 				D7DAFA0B2B833C2200F00003 /* View */,
 				D7DAFA142B8373BF00F00003 /* Custom Views */,
 				D7DAFA0C2B833C3200F00003 /* App */,
@@ -108,8 +106,8 @@
 		D7DAFA0B2B833C2200F00003 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				D7DAFA092B8238F700F00003 /* DesertDetailsView.swift */,
 				D7DAF9EF2B8108B900F00003 /* DessertsListView.swift */,
+				D7DAFA092B8238F700F00003 /* DesertDetailsView.swift */,
 				D7DAFA1D2B8379F300F00003 /* DesertRowView.swift */,
 			);
 			path = View;
@@ -163,7 +161,6 @@
 		D7DAFA1F2B83857B00F00003 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				D7DAFA152B8373D200F00003 /* String+extensions.swift */,
 				D7DAFA202B83A5CF00F00003 /* Color+extensions.swift */,
 			);
 			path = Utils;
@@ -254,7 +251,6 @@
 			files = (
 				D7DAFA0A2B8238F700F00003 /* DesertDetailsView.swift in Sources */,
 				D7DAF9FE2B811CD900F00003 /* NetworkManager.swift in Sources */,
-				D7DAFA162B8373D200F00003 /* String+extensions.swift in Sources */,
 				D7DAFA212B83A5CF00F00003 /* Color+extensions.swift in Sources */,
 				D7DAFA082B8229CD00F00003 /* DessertDetailsModel.swift in Sources */,
 				D7DAFA112B833C8200F00003 /* DessertDetailsViewModel.swift in Sources */,

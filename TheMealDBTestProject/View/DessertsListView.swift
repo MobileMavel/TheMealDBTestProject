@@ -9,32 +9,32 @@ import SwiftUI
 
 struct DessertsListView: View {
     @StateObject var viewModel: DessertsListViewModel
+    @State var result: ResultType = .Fetching
     var body: some View {
         NavigationStack {
-            VStack {
-                if viewModel.isErrorPresent {
-                    Image(systemName: "exclamationmark.triangle")
-                        .imageScale(.large)
-                        .foregroundColor(.black)
-                        .padding(.bottom)
-                    LabelView(
-                        text: "Unable to fetch desserts!",
-                        font: .title3)
-                } else if viewModel.mealsList.isEmpty {
-                    ProgressView()
-                } else {
-                    List(viewModel.mealsList.sorted(by: { lhs, rhs in lhs.strMeal < rhs.strMeal}), id: \.idMeal) { dessert in
-                        NavigationLink(destination: DesertDetailsView(viewModel: DessertDetailsViewModel(selectedID: dessert.idMeal))) {
-                            DesertRowView(title: dessert.strMeal, imageURL: dessert.strMealThumb)
+            Group {
+                switch result {
+                    case .Success:
+                        List(viewModel.deserts, id: \.idMeal) { dessert in
+                            NavigationLink(destination: DesertDetailsView(viewModel: DessertDetailsViewModel(selectedID: dessert.idMeal))) {
+                                DesertRowView(title: dessert.strMeal, imageURL: dessert.strMealThumb)
+                            }
                         }
-                    }
-                    .listStyle(.plain)
+                        .listStyle(.plain)
+                    case .NoData:
+                        Image(systemName: "exclamationmark.triangle")
+                            .imageScale(.large)
+                            .foregroundColor(.black)
+                            .padding(.bottom)
+                        LabelView(
+                            text: "Unable to fetch desserts!",
+                            font: .title3)
+                    case .Fetching:
+                        ProgressView()
                 }
             }
-            .onAppear {
-                Task {
-                    await viewModel.fetchMealsList()
-                }
+            .task {
+                result = await viewModel.fetchDesertsList()
             }
             .navigationTitle("Desserts")
             .toolbarBackground(

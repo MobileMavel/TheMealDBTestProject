@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum ResultType: Error {
+    case Success
+    case NoData
+    case Fetching
+}
+
 struct DesertsListModel: Codable {
     let meals: [Deserts]
 }
