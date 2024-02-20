@@ -118,7 +118,16 @@ struct DesertDetailsView: View {
                 case .video:
                     YouTubeView(videoId: displayTypeData.url)
                 case .image:
-                    AsyncImageView(url: displayTypeData.url)
+                    GeometryReader { geo in
+                        VStack {
+                            Spacer()
+                            AsyncImageView(url: displayTypeData.url)
+                                .frame(width: geo.size.width, height: geo.size.height * 0.4)
+                            Spacer()
+                        }
+                        .padding(.bottom, 50)
+                        .background(Color.backgroundColor)
+                    }
                 case .none:
                     EmptyView()
             }
